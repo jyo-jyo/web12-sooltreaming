@@ -1,11 +1,15 @@
 import io from 'socket.io-client';
-import webRTC from './webRTC';
-import message from './message';
-import user from './user';
-import host from './host';
+import webRTC from '@socket/webRTC';
+import message from '@socket/message';
+import user from '@socket/user';
+import host from '@socket/host';
 import { BACK_BASE_URL } from '@constant/envs';
-import animation from './animation';
-import questionmark from './questionmark';
+import animation from '@socket/animation';
+import questionmark from '@socket/questionmark';
+import isVideoOnOff from '@src/socket/isStreamOnOff';
+import roomControl from '@socket/roomControl';
+import vote from '@socket/vote';
+import requestFriend from '@socket/requestFriend';
 
 const Socket = () => {
   const socket = io(BACK_BASE_URL, {
@@ -25,6 +29,10 @@ const Socket = () => {
     host: host(socket),
     animation: animation(socket),
     questionmark: questionmark(socket),
+    isVideoOnOff: isVideoOnOff(socket),
+    roomControl: roomControl(socket),
+    vote: vote(socket),
+    requestFriend: requestFriend(socket),
   };
 };
 export default Socket();

@@ -1,5 +1,16 @@
 import { css } from 'styled-components';
 
+export const Z_INDEX = {
+  closeUp: 0,
+  camOn: 10,
+  camOff: 20,
+  nickname: 25,
+  question: 30,
+  cheers: 40,
+  modal: 50,
+  toast: 60,
+};
+
 export const COLOR = {
   primary1: '#BED297',
   primary2: '#EBEFD6',

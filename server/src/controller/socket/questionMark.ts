@@ -1,20 +1,29 @@
 import { Socket } from 'socket.io';
-import { getTimeString } from '@utils/time';
 import type { roomType } from '@loader/socket';
+import type { TargetInfoType } from '@controller/socket/entering';
+import { createLog } from '@controller/socket/logController';
 
 const QUESTION = 'QUESTION';
 
-const questionMark = ({ io, socket, rooms }: { io: any; socket: Socket; rooms: roomType }) => {
-  socket.on(QUESTION, ({ x, y, chatRoomCode, user }) => {
-    let x1 = x;
-    console.log(x1);
-    console.log(x, y);
-    let code = '';
-    code = chatRoomCode;
-    socket.emit(QUESTION, { x, y });
-    socket.to(code).emit(QUESTION, { x, y });
+const questionMark = ({
+  io,
+  socket,
+  rooms,
+  targetInfo,
+}: {
+  io: any;
+  socket: Socket;
+  rooms: roomType;
+  targetInfo: TargetInfoType;
+}) => {
+  socket.on(QUESTION, ({ x, y }) => {
+    const { code } = targetInfo;
+
+    io.to(code).emit(QUESTION, { x, y });
+    const id = rooms[code].users[socket.id].id;
+    createLog(id, QUESTION);
   });
-  return { io, socket, rooms };
+  return { io, socket, rooms, targetInfo };
 };
 
 export default questionMark;

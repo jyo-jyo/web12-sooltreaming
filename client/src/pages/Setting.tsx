@@ -1,55 +1,57 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@src/store';
+import { requestInitInfo } from '@store/device';
+import { setRoomCode } from '@store/room';
 import Header from '@components/Header';
-import { Wrapper, Button, CancleButton, Row } from './Setting.style.js';
+import { Wrapper, Button, CancleButton, Row } from '@pages/Setting.style.js';
 import PrevSetting from '@components/setting/PrevSetting';
-import ChatRoom from '@components/chat-room/ChatRoom';
+import ChatRoom from '@components/room/';
 import Loading from '@components/custom/Loading';
-import customRTC from '@src/utils/customRTC';
 
 const Setting: React.FunctionComponent = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  const stream = useSelector((state: RootState) => state.device.stream);
+  const isLoading = useSelector((state: RootState) => state.device.isLoading);
   const [isFirst, setIsFirst] = useState<boolean>(true);
-  const [stream, setStream] = useState<MediaStream>(new MediaStream());
   const history = useHistory();
+  const { code } = useParams();
 
   useEffect(() => {
-    const initDevice = async () => {
-      const newStream = await customRTC.initStream();
-      setIsLoading(false);
-      setStream(newStream);
-    };
-    initDevice();
+    dispatch(requestInitInfo({}));
+    dispatch(setRoomCode(code));
+  }, []);
 
+  useEffect(() => {
     return () => {
-      stream.getTracks().forEach((track) => {
+      stream?.getTracks().forEach((track) => {
         track.stop();
       });
     };
-  }, []);
+  }, [stream]);
 
-  const joining = () => {
+  const onClickJoin = () => {
     setIsFirst(false);
   };
 
-  const cancle = () => {
+  const onClickCancel = () => {
     history.replace('/');
   };
 
-  return isLoading ? (
-    <Loading />
-  ) : isFirst ? (
-    <Wrapper>
-      <Header />
-      <PrevSetting stream={stream} setStream={setStream} />
-      <Row>
-        <CancleButton onClick={cancle}>취소</CancleButton>
-        <Button onClick={joining}>입장</Button>
-      </Row>
-    </Wrapper>
-  ) : (
-    <ChatRoom stream={stream} />
-  );
+  if (isLoading) return <Loading />;
+  if (isFirst)
+    return (
+      <Wrapper>
+        <Header />
+        <PrevSetting />
+        <Row>
+          <CancleButton onClick={onClickCancel}>취소</CancleButton>
+          <Button onClick={onClickJoin}>입장</Button>
+        </Row>
+      </Wrapper>
+    );
+  return <ChatRoom />;
 };
 
 export default Setting;

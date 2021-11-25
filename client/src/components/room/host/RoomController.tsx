@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 
 import {
-  Wrapper,
-  RowWrapper,
+  ColumnBox,
+  RowBox,
   IconButton,
   ToggleButton,
   DialogButton,
-} from './RoomController.style';
+} from '@components/room/host/RoomController.style';
 
-const RoomController = ({toggleRoomEntry}) => {
+const RoomController = ({ toggleRoomEntry }) => {
   const code = useSelector((state: RootState) => state.room.roomCode);
   const isOpen = useSelector((state: RootState) => state.room.isOpen);
 
@@ -19,23 +19,21 @@ const RoomController = ({toggleRoomEntry}) => {
     navigator.clipboard.writeText(window.location.href);
   };
 
-  const requestToggleIsOpen = () => toggleRoomEntry();
-
   return (
-    <Wrapper>
-      <RowWrapper>
+    <ColumnBox>
+      <RowBox>
         <span>방 코드 번호 : {code}</span>
         <IconButton onClick={copyURL}>
           <CopyIcon />
         </IconButton>
-      </RowWrapper>
-      <RowWrapper>
+      </RowBox>
+      <RowBox>
         <span>방 접속 제한 : </span>
-        <ToggleButton onClick={requestToggleIsOpen}>
+        <ToggleButton onClick={toggleRoomEntry}>
           <DialogButton isSelected={isOpen}>{isOpen ? 'Open' : 'Close'}</DialogButton>
         </ToggleButton>
-      </RowWrapper>
-    </Wrapper>
+      </RowBox>
+    </ColumnBox>
   );
 };
 

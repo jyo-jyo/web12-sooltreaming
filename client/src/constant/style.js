@@ -8,6 +8,7 @@ export const Z_INDEX = {
   question: 30,
   cheers: 40,
   modal: 50,
+  updownNum: 55,
   toast: 60,
 };
 
@@ -16,11 +17,13 @@ export const COLOR = {
   primary2: '#EBEFD6',
   primary3: '#9DB589',
   error: '#FF8988',
+  error2: '#E26664',
+  error3: '#D43E3C',
   lightError: '#FFD4D3',
   darkError: '#CD6766',
   titleActive: '#006737',
   body: '#5C5C5C',
-  lable: '#888888',
+  label: '#888888',
   placeholder: '#888888',
   line: '#D9DBC8',
   background: '#FCFFFC',
@@ -28,6 +31,7 @@ export const COLOR = {
   offWhite: '#F6F6F6',
   point: '#A06000',
   black: '#000000',
+  disabled: '#EBEFD6',
 };
 
 export const INPUT_STYLE = css`
@@ -60,7 +64,7 @@ export const BTN_STYLE = css`
   }
 `;
 
-export const CANCLE_BTN_STYLE = css`
+export const CANCEL_BTN_STYLE = css`
   padding: 0;
   margin: 0;
   background-color: ${COLOR.error};
@@ -77,4 +81,9 @@ export const CANCLE_BTN_STYLE = css`
   &:disabled {
     background-color: ${COLOR.lightError};
   }
+`;
+
+export const BOX_SHADOW = css`
+  border-radius: 10px;
+  box-shadow: 1px 1px 1px 1px #ccc;
 `;

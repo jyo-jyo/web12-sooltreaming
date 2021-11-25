@@ -1,57 +1,60 @@
 import React from 'react';
 import {
-  Wrapper,
+  MenuBox,
   UserList,
-  ProfileDiv,
+  Profile,
   VoteButton,
   ReqFriendButton,
 } from '@src/components/user/Users.style';
 import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
-import { useDispatch } from 'react-redux';
-import useRequestFriend from '@hooks/socket/useRequestFriend';
 import Socket from '@socket/socket';
 
 type UsersPropTypes = {
   startVoteRef: React.MutableRefObject<Function>;
+  onclickRequestFriend: any;
 };
-
-const Users: React.FC<UsersPropTypes> = ({ startVoteRef }) => {
-  const dispatch = useDispatch();
+const Users: React.FC<UsersPropTypes> = ({ startVoteRef, onclickRequestFriend }) => {
   const users = useSelector((state: RootState) => state.room.users);
+
   const { friendList, sendFriendList, receiveFriendList } = useSelector(
     (state: RootState) => state.friend,
   );
+
+  const friendListId = Object.values(friendList).map(({ _id }) => _id);
+  const sendFriendListId = Object.values(sendFriendList).map(({ _id }) => _id);
+  const receiveFriendListId = Object.values(receiveFriendList).map(({ _id }) => _id);
+
   const {
     imgUrl: myImgUrl,
     nickname: myNickname,
     id: myId,
   } = useSelector((state: RootState) => state.user);
-  const imPossibleFriends = [...friendList, ...sendFriendList, ...receiveFriendList];
-
-  const { onclickRequestFriend } = useRequestFriend();
+  const imPossibleFriends = [...friendListId, ...sendFriendListId, ...receiveFriendListId];
   return (
-    <Wrapper>
+    <MenuBox>
       <UserList>
-        <ProfileDiv>
+        <Profile>
           <img src={myImgUrl} />
           <div>{myNickname}</div>
-        </ProfileDiv>
+        </Profile>
       </UserList>
       {Object.entries(users)
         .filter(([key]) => key !== Socket.getSID())
         .map(([key, { imgUrl, nickname, id }]) => (
           <UserList key={id}>
-            <ProfileDiv>
+            <Profile>
               <img src={imgUrl} />
               <div>{nickname}</div>
-            </ProfileDiv>
+            </Profile>
             <div>
               <VoteButton onClick={() => (startVoteRef?.current ?? (() => {}))(key)}>
                 심판
               </VoteButton>
               {!imPossibleFriends.includes(id) && id !== myId ? (
-                <ReqFriendButton onClick={onclickRequestFriend} data-uid={id} data-sid={key}>
+                <ReqFriendButton
+                  onClick={() => onclickRequestFriend({ imgUrl, nickname, id, sid: key })}
+                >
                   +
                 </ReqFriendButton>
               ) : (
@@ -60,7 +63,7 @@ const Users: React.FC<UsersPropTypes> = ({ startVoteRef }) => {
             </div>
           </UserList>
         ))}
-    </Wrapper>
+    </MenuBox>
   );
 };
 

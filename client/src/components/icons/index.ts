@@ -27,6 +27,20 @@ import SmallAcceptIcon from '@components/icons/SmallAcceptIcon';
 import SmallCancelIcon from '@components/icons/SmallCancelIcon';
 import ExitIcon from '@components/icons/ExitIcon';
 
+import GameRuleIcon from '@src/components/icons/GameRuleIcon';
+import ProfileSquareIcon from '@components/icons/ProfileSquareIcon';
+import GreenXButtonIcon from '@components/icons/GreenXButtonIcon';
+import AcceptIcon from '@components/icons/AcceptIcon';
+import RejectIcon from '@components/icons/RejectIcon';
+import CancelIcon from '@components/icons/CancelIcon';
+import DeleteIcon from '@components/icons/DeleteIcon';
+import HomeIcon from '@components/icons/HomeIcon';
+import NicknameChangeIcon from '@components/icons/NicknameChangeIcon';
+import CloseIcon from '@components/icons/CloseIcon';
+
+import LiarGameIcon from '@components/icons/LiarGameIcon';
+import UpdownGameIcon from '@components/icons/UpdownGameIcon';
+
 export type iconPropsType = {
   className?: string;
   width?: number;
@@ -60,4 +74,16 @@ export {
   SmallAcceptIcon,
   SmallCancelIcon,
   ExitIcon,
+  GameRuleIcon,
+  ProfileSquareIcon,
+  GreenXButtonIcon,
+  AcceptIcon,
+  RejectIcon,
+  CancelIcon,
+  DeleteIcon,
+  HomeIcon,
+  NicknameChangeIcon,
+  CloseIcon,
+  LiarGameIcon,
+  UpdownGameIcon,
 };

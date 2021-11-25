@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { COLOR } from '@constant/style';
+import styled, { keyframes } from 'styled-components';
+import { COLOR, Z_INDEX, BOX_SHADOW } from '@constant/style';
 
-export const Wrapper = styled.div`
+export const Container = styled.div`
   max-width: 340px;
   width: 100%;
   height: 100%;
@@ -12,25 +12,40 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
-export const ItemListWrapper = styled.div`
+export const ItemListBox = styled.div`
   width: 100%;
   position: relative;
   top: -10px;
+  z-index: ${Z_INDEX.modal};
+`;
+
+export const soft = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
 `;
 
 export const ItemList = styled.ul`
-  max-width: 340px;
-  width: 100%;
+  width: 80%;
+  ${BOX_SHADOW}
 
   position: absolute;
+  /* right: 0; */
   list-style: none;
   padding-left: 0px;
+  overflow: hidden;
 
-  box-shadow: 0px 0px 4px rgba(204, 204, 204, 0.5), 0px 2px 4px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(4px);
   border-radius: 10px;
 
+  -webkit-animation: ${soft} 0.2s linear;
+  animation: ${soft} 0.2s linear;
   background: ${COLOR.background};
+
+  & > li {
+    border-bottom: 1px solid ${COLOR.line};
+    &:last-child {
+      border-bottom: none;
+    }
+  }
 `;
 
 export const ToggleButton = styled.button`
@@ -41,4 +56,16 @@ export const ToggleButton = styled.button`
   border: none;
   background: transparent;
   outline: none;
+
+  svg {
+    flex: 0 0 auto;
+    margin-left: 10px;
+    transition: transform 0.3s;
+    transform: rotate(-180deg);
+  }
+  &:focus {
+    svg {
+      transform: rotate(0deg);
+    }
+  }
 `;

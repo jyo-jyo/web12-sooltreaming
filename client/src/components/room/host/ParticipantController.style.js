@@ -1,48 +1,24 @@
 import styled from 'styled-components';
 import { COLOR } from '@constant/style';
 
-export const Wrapper = styled.div`
+export const ColumnBox = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
 
   flex-direction: column;
-`;
+  overflow-y: scroll;
 
-export const RowWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  height: 50px;
-  align-items: center;
-  justify-content: space-between;
-  background-color: ${COLOR.white};
-  list-style: none;
-  padding: 10px;
-  & > div {
-    display: flex;
-  }
-`;
+  margin-bottom: 10px;
+  padding: 15px;
+  position: relative;
 
-export const ProfileDiv = styled.div`
-  width: 100%;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  & > img {
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
-    -webkit-user-drag: none;
-    user-select: none;
-    margin-right: 10px;
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 16px;
+    border-radius: 10px;
+    background: ${COLOR.line};
   }
-  & > div {
-    margin: auto 0;
+  &::-webkit-scrollbar-thumb {
+    background-color: ${COLOR.primary3};
+    border-radius: 10px;
   }
-`;
-
-export const ControlDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;

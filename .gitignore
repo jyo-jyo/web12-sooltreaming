@@ -9,7 +9,11 @@
 # package-lock.json
 /client/package-lock.json
 /server/package-lock.json
+/domain/package-lock.json
 
 # building files
 /client/build/
 /server/build/
+
+# public Images
+/server/uploads/

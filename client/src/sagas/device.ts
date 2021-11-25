@@ -54,12 +54,12 @@ async function loadVideoStream({ videoInfo, stream }) {
   if (!videoInfo) return;
   const newStream = stream.clone();
 
-  newStream.getVideoTracks().forEach((track) => {
+  newStream?.getVideoTracks().forEach((track) => {
     track.stop();
     newStream.removeTrack(track);
   });
 
-  const newVideoTrack = await customRTC.getVideoTrack(videoInfo?.deviceId);
+  const newVideoTrack = await customRTC.getVideoTrack(videoInfo?.deviceId ?? '');
   if (!!newVideoTrack) newStream.addTrack(newVideoTrack);
 
   return { stream: newStream };
@@ -81,13 +81,13 @@ async function loadAudioStream({ audioInfo, stream }) {
   if (!audioInfo) return;
   const newStream = stream.clone();
 
-  newStream.getAudioTracks().forEach((track) => {
+  newStream?.getAudioTracks().forEach((track) => {
     track.stop();
     newStream.removeTrack(track);
   });
 
-  const newAudioTrack = await customRTC.getAudioTrack(audioInfo?.deviceId);
-  if (!!newAudioTrack) stream.addTrack(newAudioTrack);
+  const newAudioTrack = await customRTC.getAudioTrack(audioInfo?.deviceId ?? '');
+  if (!!newAudioTrack) newStream.addTrack(newAudioTrack);
 
   return { stream: newStream };
 }

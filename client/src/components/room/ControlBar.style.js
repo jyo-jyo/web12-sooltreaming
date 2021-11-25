@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { COLOR } from '@constant/style';
 
-export const Wrapper = styled.div`
+export const BarContainer = styled.div`
   width: 100%;
   height: 50px;
   display: flex;
@@ -11,18 +11,18 @@ export const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const Div = styled.div`
+export const LineBox = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-export const Button = styled.button`
+export const ControlButton = styled.button`
   background-color: none;
   background: none;
   border: none;
   cursor: pointer;
   margin: 0 5px;
-  &: hover {
+  &:hover {
     & > svg {
       padding: 2px;
     }

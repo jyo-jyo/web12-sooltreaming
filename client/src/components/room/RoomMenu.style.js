@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { COLOR } from '@constant/style';
 
-export const Wrapper = styled.div`
+export const MenuBox = styled.div`
   flex: 0 0 auto;
   width: 320px;
   height: 100%;
@@ -62,4 +62,13 @@ export const CloseButton = styled.button`
   &::after {
     transform: rotate(-45deg);
   }
+`;
+
+export const SelectBox = styled.div`
+  padding: 10px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;

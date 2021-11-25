@@ -1,49 +1,50 @@
 import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import RoomMenu from '@components/room/RoomMenu';
 import ChatMonitor from '@components/room/monitor/';
 import ControlBar from '@components/room/ControlBar';
-import { Wrapper, VideoSection, ColumnDiv } from '@components/room/index.style';
+import { FullScreen, FlexBox, ColumnBox } from '@components/room/index.style';
 import AnimationScreen from '@components/room/animation-screen/';
 import Scaffold from '@components/room/scaffold';
-import useUser from '@hooks/socket/useUser';
-import useAnimation from '@hooks/socket/useAnimation';
+import Games from '@components/room/games';
+import useAnimationSocket from '@hooks/socket/useAnimationSocket';
+import useFriendSocket from '@src/hooks/socket/useFriendSocket';
+
 import Socket from '@socket/socket';
-import {
-  friendListRequest,
-  sendFriendListRequest,
-  receiveFriendListRequest,
-} from '@src/store/friend';
 
 const ChatRoom: React.FC = () => {
-  const dispatch = useDispatch();
   const startVoteRef = useRef<Function>(() => {});
+  const startGamesRef = useRef<Function>(() => {});
 
   useEffect(() => {
     Socket.connect();
-    dispatch(friendListRequest([]));
-    dispatch(sendFriendListRequest([]));
-    dispatch(receiveFriendListRequest([]));
     return () => {
       Socket.disconnect();
     };
   }, []);
 
-  useUser();
-  const { cheers, closeup, closeupUser } = useAnimation();
-
+  const { activateCheers, activateCloseup, deactivateCloseup } = useAnimationSocket();
+  const { onclickRequestFriend } = useFriendSocket();
   return (
-    <Wrapper>
-      <ColumnDiv>
-        <VideoSection>
-          <ChatMonitor closeupUser={closeupUser} />
+    <FullScreen>
+      <ColumnBox>
+        <FlexBox>
+          <ChatMonitor />
           <AnimationScreen />
-        </VideoSection>
-        <ControlBar onClickCheers={cheers} onClickCloseup={closeup} />
-      </ColumnDiv>
-      <RoomMenu startVoteRef={startVoteRef} />
+        </FlexBox>
+        <ControlBar
+          onClickCheers={activateCheers}
+          activateCloseup={activateCloseup}
+          deactivateCloseup={deactivateCloseup}
+        />
+      </ColumnBox>
+      <RoomMenu
+        startVoteRef={startVoteRef}
+        startGamesRef={startGamesRef}
+        onclickRequestFriend={onclickRequestFriend}
+      />
       <Scaffold startVoteRef={startVoteRef} />
-    </Wrapper>
+      <Games startGamesRef={startGamesRef} />
+    </FullScreen>
   );
 };
 

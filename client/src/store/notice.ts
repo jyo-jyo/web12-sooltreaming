@@ -1,24 +1,19 @@
 import { createAction } from '@hooks/redux';
+import type { NoticeStateType, ErrorMessageType } from '@ts-types/store';
 
-type NoticeStateType = {
-  errorMessage: string;
-};
 const initialState: NoticeStateType = {
   errorMessage: '',
 };
 
-type ErrorMessageType = {
-  errorMessage: string;
-};
-
 export const [SET_NOTICE_MESSAGE, setNoticeMessage] =
   createAction<ErrorMessageType>('SET_NOTICE_MESSAGE');
+export const [RESET_NOTICE_MESSAGE, resetNoticeMessage] = createAction<{}>('RESET_NOTICE_MESSAGE');
 
-type noticeAction = ReturnType<typeof setNoticeMessage>;
+type NoticeAction = ReturnType<typeof setNoticeMessage>;
 
 function noticeReducer(
   state: NoticeStateType = initialState,
-  action: noticeAction,
+  action: NoticeAction,
 ): NoticeStateType {
   switch (action.type) {
     case SET_NOTICE_MESSAGE: {
@@ -26,6 +21,12 @@ function noticeReducer(
       return {
         ...state,
         errorMessage,
+      };
+    }
+    case RESET_NOTICE_MESSAGE: {
+      return {
+        ...state,
+        errorMessage: '',
       };
     }
     default:

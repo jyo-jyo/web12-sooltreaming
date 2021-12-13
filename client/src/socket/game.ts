@@ -1,59 +1,61 @@
 import { Socket } from 'socket.io-client';
 import {
   UPDOWN_START,
-  UPDOWN_STOP,
+  RANDOM_PICK_START,
   LIAR_START,
-  LIAR_STOP,
+  GAME_STOP,
 } from 'sooltreaming-domain/constant/socketEvent';
 
 const game =
   (socket: Socket) =>
-  ({ startUpdown, stopUpdown, startLiar, randomNumRef, keywordRef }) => {
+  ({ startUpdown, startLiar, startRandomPick, stopGame, randomNumRef, keywordRef, onePickRef }) => {
     socket.on(UPDOWN_START, (startingSID, randomNum) => {
       randomNumRef.current = randomNum;
       startUpdown(startingSID);
-    });
-    socket.on(UPDOWN_STOP, () => {
-      randomNumRef.current = '';
-      stopUpdown();
     });
 
     socket.on(LIAR_START, (startingSID, keyword) => {
       keywordRef.current = keyword;
       startLiar(startingSID);
     });
-    socket.on(LIAR_STOP, () => {
-      keywordRef.current = '';
-      stopUpdown();
+
+    socket.on(RANDOM_PICK_START, (startingSID, onePick) => {
+      onePickRef.current = onePick;
+      startRandomPick(startingSID);
     });
 
-    // 업다운 시작과 끝
+    socket.on(GAME_STOP, () => {
+      randomNumRef.current = '';
+      keywordRef.current = { subject: '', keyword: '' };
+      onePickRef.current = '';
+      stopGame();
+    });
+
+    // 게임 시작과 끝
     const requestUpdownStart = () => {
       socket.emit(UPDOWN_START, socket.id);
     };
-    const requestUpdownStop = () => {
-      socket.emit(UPDOWN_STOP);
-    };
-
-    // 라이어 시작과 끝
     const requestLiarStart = () => {
       socket.emit(LIAR_START, socket.id);
     };
-    const requestLiarStop = () => {
-      socket.emit(LIAR_STOP);
+    const requestRandomPickStart = () => {
+      socket.emit(RANDOM_PICK_START, socket.id);
+    };
+    const requestGameStop = () => {
+      socket.emit(GAME_STOP);
     };
 
     const disconnecting = () => {
       socket.off(UPDOWN_START);
-      socket.off(UPDOWN_STOP);
       socket.off(LIAR_START);
-      socket.off(LIAR_STOP);
+      socket.off(RANDOM_PICK_START);
+      socket.off(GAME_STOP);
     };
     return {
       requestUpdownStart,
-      requestUpdownStop,
       requestLiarStart,
-      requestLiarStop,
+      requestRandomPickStart,
+      requestGameStop,
       disconnecting,
     };
   };

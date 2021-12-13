@@ -10,6 +10,20 @@ export const Contents = styled.div`
   align-items: center;
   padding: 20px;
   position: relative;
+
+  .host {
+    span {
+      font-weight: 600;
+      color: ${COLOR.black};
+    }
+  }
+
+  .random-pick {
+    span {
+      font-weight: 600;
+      color: ${COLOR.error3};
+    }
+  }
 `;
 
 export const GameTitle = styled.div`

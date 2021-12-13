@@ -6,11 +6,9 @@ import { addStreams } from '@store/room';
 
 const useSignalSocket = () => {
   const dispatch = useDispatch();
-  const streams = useSelector((state: RootState) => state.room.streams);
   const stream = useSelector((state: RootState) => state.device.stream);
 
-  const addStream = (sid, stream) => {
-    if (streams[sid]) return;
+  const addStream = (sid) => (stream) => {
     dispatch(addStreams({ sid, stream }));
   };
 

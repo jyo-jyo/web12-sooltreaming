@@ -10,7 +10,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@src/store';
 import type { RankingBoxPropType } from '@ts-types/components/user-information';
 
-const RankingBox: React.FC<RankingBoxPropType> = ({ title, rank, nowSelect, filterList }) => {
+const RankingBox: React.FC<RankingBoxPropType> = ({
+  title,
+  rank,
+  nowSelect,
+  filterList,
+}): React.ReactElement => {
   const myId = useSelector((state: RootState) => state.user.id);
   const rankList =
     filterList.length === rank.length
@@ -26,7 +31,9 @@ const RankingBox: React.FC<RankingBoxPropType> = ({ title, rank, nowSelect, filt
             <div>
               <RankNum>{index + 1}</RankNum>
               <img src={userInfo.imgUrl} alt="프로필" />
-              <div>{userInfo.nickname}</div>
+              <div className="nickname">
+                <span>{userInfo.nickname}</span>
+              </div>
             </div>
             <div>{userInfo[nowSelect]}</div>
           </PersonalRankBox>

@@ -7,7 +7,7 @@ import { setIsCheers } from '@store/room';
 import useMarkSocket from '@hooks/socket/useMarkSocket';
 import { CHEERS_GIF_NUM, CHEERS_TIME, LISTED_GIF } from 'sooltreaming-domain/constant/addition';
 
-const AnimationScreen: React.FC = () => {
+const AnimationScreen: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
   const screenRef = useRef<HTMLDivElement>(null);
   const cheersRef = useRef<HTMLImageElement>(null);
@@ -52,7 +52,7 @@ const AnimationScreen: React.FC = () => {
   return (
     <Screen onContextMenu={onClickScreen} ref={screenRef}>
       {Object.entries(marks).map(([key, { x, y }]) => {
-        if (!screenRef.current) return;
+        if (!screenRef.current) return {};
         const { clientWidth, clientHeight } = screenRef.current;
         const clientX = x * clientWidth;
         const clientY = y * clientHeight;

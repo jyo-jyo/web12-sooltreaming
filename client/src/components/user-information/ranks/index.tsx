@@ -19,7 +19,7 @@ const rankingMenuList = {
   '주최자 횟수': 'starterCount',
 };
 
-const Ranks: React.FC = () => {
+const Ranks: React.FC = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const friendList = useSelector((state: RootState) => state.friend.friendList);
   const friendListId = Object.values(friendList).map(({ _id }) => _id);
@@ -33,8 +33,9 @@ const Ranks: React.FC = () => {
 
   useEffect(() => {
     const getRank = async () => {
-      const rank = await API.call(API.TYPE.GET_RANK, rankingMenuList[nowSelect]);
-      setRank(rank);
+      const newRank = await API.call(API.TYPE.GET_RANK, rankingMenuList[nowSelect]);
+      if (!newRank) return;
+      setRank(newRank);
       setIsLoading(false);
     };
     getRank();
@@ -59,6 +60,11 @@ const Ranks: React.FC = () => {
           )}
           itemList={Object.keys(rankingMenuList)}
         />
+        <div className="announce">
+          <p>
+            ※ 랭킹은 <span>5분</span>마다 업데이트 됩니다.{' '}
+          </p>
+        </div>
       </HeaderContainer>
       <RankContainer>
         <RankingBox

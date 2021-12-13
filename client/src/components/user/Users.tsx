@@ -11,7 +11,10 @@ import { RootState } from '@src/store';
 import Socket from '@socket/socket';
 import type { UsersPropType } from '@ts-types/components/user';
 
-const Users: React.FC<UsersPropType> = ({ startVoteRef, onclickRequestFriend }) => {
+const Users: React.FC<UsersPropType> = ({
+  startVoteRef,
+  onclickRequestFriend,
+}): React.ReactElement => {
   const users = useSelector((state: RootState) => state.room.users);
 
   const { friendList, sendFriendList, receiveFriendList } = useSelector(
@@ -33,16 +36,16 @@ const Users: React.FC<UsersPropType> = ({ startVoteRef, onclickRequestFriend }) 
       <UserList>
         <Profile>
           <img src={myImgUrl} alt="내 프로필" />
-          <div>{myNickname}</div>
+          <div className="nickname">{myNickname}</div>
         </Profile>
       </UserList>
       {Object.entries(users)
         .filter(([key]) => key !== Socket.getSID())
         .map(([key, { imgUrl, nickname, id }]) => (
-          <UserList key={id}>
+          <UserList key={key}>
             <Profile>
               <img src={imgUrl} alt="다른 사람 프로필" />
-              <div>{nickname}</div>
+              <div className="nickname">{nickname}</div>
             </Profile>
             <div>
               <VoteButton onClick={() => (startVoteRef?.current ?? (() => {}))(key)}>

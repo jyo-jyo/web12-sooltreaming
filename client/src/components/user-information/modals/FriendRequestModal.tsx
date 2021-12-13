@@ -16,7 +16,7 @@ import { API } from '@api/index';
 import { FriendItem } from '@components/user-information/friend-list/FriendItem';
 import { GreenXButtonIcon } from '@src/components/icons';
 
-const FriendRequestModal: React.FC = () => {
+const FriendRequestModal: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { sendFriendList, receiveFriendList } = useSelector((state: RootState) => state.friend);
 
@@ -25,17 +25,20 @@ const FriendRequestModal: React.FC = () => {
   const closeModal = () => setIsOpen(false);
 
   const cancel = async (id) => {
-    await API.call(API.TYPE.PATCH_SEND_FRIEND, id);
+    const result = await API.call(API.TYPE.PATCH_SEND_FRIEND, id);
+    if (!result) return;
     dispatch(cancelFriendRequest(id));
   };
 
   const reject = async (id) => {
-    await API.call(API.TYPE.PATCH_RECEIVE_FRIEND, id);
+    const result = await API.call(API.TYPE.PATCH_RECEIVE_FRIEND, id);
+    if (!result) return;
     dispatch(rejectFriendRequest(id));
   };
 
   const accept = async ({ id, nickname, imgUrl }) => {
-    await API.call(API.TYPE.PATCH_FRIEND, id);
+    const result = await API.call(API.TYPE.PATCH_FRIEND, id);
+    if (!result) return;
     dispatch(acceptFriendRequest({ _id: id, nickname, imgUrl }));
   };
 

@@ -1,14 +1,7 @@
 import { BACK_BASE_URL, BACK_VERSION } from '@constant/envs';
+import { fetchParams } from '@ts-types/utils';
 
 const BASE_URL = `${BACK_BASE_URL}/api/${BACK_VERSION}`;
-
-interface fetchParams {
-  url: string;
-  query?: { [key: string]: string };
-  body?: FormData | Object;
-  headerOptions?: HeadersInit;
-  options?: RequestInit;
-}
 
 const customFetch =
   (method: string) =>
@@ -38,6 +31,7 @@ const customFetch =
 
     const resolve = await fetch(`${BASE_URL}${url}${query_string}`, init);
     const { status } = resolve;
+    if (!status) return resolve;
     const json = await resolve.json();
     return { json, status };
   };

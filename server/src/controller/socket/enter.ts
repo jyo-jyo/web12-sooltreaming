@@ -1,5 +1,3 @@
-import { Socket } from 'socket.io';
-import type { roomType } from '@loader/socket';
 import { ERROR } from '@src/constant';
 import {
   ENTER_ROOM,
@@ -13,12 +11,10 @@ import {
   CLOSEUP_BREAK,
   TICKET_FAILURE,
 } from 'sooltreaming-domain/constant/socketEvent';
+import type { EnterPropType, SocketPropType } from '@src/types';
+import { createLog } from '@service/user';
 
-export type TargetInfoType = {
-  code: string;
-};
-
-const enter = ({ io, socket, rooms }: { io: any; socket: Socket; rooms: roomType }) => {
+const enter = ({ io, socket, rooms }: EnterPropType): SocketPropType => {
   const targetInfo = { code: '' };
 
   socket.on(ENTER_ROOM, ({ chatRoomCode: code, user, userDevices }) => {
@@ -33,6 +29,7 @@ const enter = ({ io, socket, rooms }: { io: any; socket: Socket; rooms: roomType
     }
 
     rooms[code].users[sid] = user;
+    rooms[code].users[sid].enterTime = new Date().getTime();
     rooms[code].usersDevices[sid] = userDevices;
     rooms[code].vote.cool[sid] = 0;
 
@@ -49,10 +46,16 @@ const enter = ({ io, socket, rooms }: { io: any; socket: Socket; rooms: roomType
 
     const sid = socket.id;
     socket.leave(code);
+
+    // 접속시간 계산
+    const leaveTime = new Date().getTime();
+    const totalSeconds = Math.floor((leaveTime - rooms[code].users[sid].enterTime) / 1000);
+    createLog(rooms[code].users[sid].id, DISCONNECT_USER, totalSeconds);
+
     delete rooms[code].users[sid];
     if (!Object.keys(rooms[code].users).length) {
       rooms[code].waiters.forEach((sid) => {
-        io.to(sid).emit(TICKET_FAILURE, { message: '방이 사라졌습니다.' });
+        io.to(sid).emit(TICKET_FAILURE, { message: ERROR.DELETED_ROOM });
       });
       delete rooms[code];
     } else {
